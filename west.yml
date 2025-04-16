@@ -1,0 +1,10 @@
+manifest:
+  remotes:
+    - name: zephyrproject-rtos
+      url-base: https://github.com/zephyrproject-rtos
+  projects:
+    - name: zephyr
+      remote: zephyrproject-rtos
+      clone-depth: 1
+      revision: v4.1.0
+path: led_and_button
