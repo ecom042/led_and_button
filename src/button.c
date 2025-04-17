@@ -25,6 +25,16 @@ static struct gpio_callback button_cb_data;
 
 static uint32_t button_press_time = 0;
 
+/**
+ * @brief Button pressed callback function.
+ *
+ * This function is called when the button is pressed or released.
+ * It sends a message to the zbus channel with the event type.
+ *
+ * @param dev Pointer to the device structure for the driver instance.
+ * @param cb Pointer to the callback structure.
+ * @param pins Bitmask of the pins that triggered the callback.
+ */
 void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
 	struct msg_button_evt msg = {.evt = BUTTON_EVT_UNDEFINED};
@@ -53,6 +63,14 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t
 	}
 }
 
+/**
+ * @brief Initialize the button GPIO pin.
+ *
+ * This function configures the GPIO pin for the button as an input pin.
+ * It also sets up the interrupt for the button press and release events.
+ *
+ * @return 0 on success, negative error code on failure.
+ */
 int button_init(void)
 {
 	int ret;
@@ -72,6 +90,15 @@ int button_init(void)
 	return 0;
 }
 
+/**
+ * @brief Enable interrupts for the button GPIO pin.
+ *
+ * This function configures the GPIO pin for the button to trigger interrupts
+ * on both rising and falling edges. It also initializes the callback function
+ * for handling button press and release events.
+ *
+ * @return 0 on success, negative error code on failure.
+ */
 int button_enable_interrupts(void)
 {
 	int ret = gpio_pin_interrupt_configure_dt(&button, GPIO_INT_EDGE_BOTH);
