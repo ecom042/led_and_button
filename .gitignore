@@ -18,6 +18,7 @@ build*/
 !scripts/pylib/build_helpers
 cscope.*
 .dir
+cmake-build-debug
 
 /*.patch
 
