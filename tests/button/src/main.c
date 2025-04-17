@@ -31,6 +31,13 @@ static struct button_fixture {
 		k_msleep(80);                                                                      \
 	} while (0)
 
+/**
+ * @brief Setup function for the button test fixture.
+ *
+ * This function initializes the button GPIO and enables interrupts.
+ *
+ * @return Pointer to the fixture structure.
+ */
 static void *button_test_setup(void)
 {
 	zassert_not_null(fixture.button_gpio.port);
@@ -44,6 +51,15 @@ static void *button_test_setup(void)
 	return &fixture;
 }
 
+/**
+ * @brief Tests single press event messaging.
+ *
+ * This tests the button press and release events by simulating a single press
+ * and release of the button. It checks if the BUTTON_EVT_PRESSED and
+ * BUTTON_EVT_RELEASED events are sent correctly.
+ *
+ * @param fixture Pointer to the fixture structure.
+ */
 ZTEST_F(button, test_01_single_press)
 {
 	const struct zbus_channel *chan;
@@ -64,6 +80,15 @@ ZTEST_F(button, test_01_single_press)
 	zassert_true(msg.evt == BUTTON_EVT_RELEASED);
 }
 
+/**
+ * @brief Tests long press event messaging.
+ *
+ * This tests the button long press event by simulating a long press and release
+ * of the button. It checks if the BUTTON_EVT_PRESSED, BUTTON_EVT_RELEASED, and
+ * BUTTON_EVT_LONGPRESS events are sent correctly.
+ *
+ * @param fixture Pointer to the fixture structure.
+ */
 ZTEST_F(button, test_02_long_press)
 {
 	const struct zbus_channel *chan;
