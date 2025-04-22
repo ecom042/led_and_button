@@ -11,6 +11,7 @@ ZBUS_CHAN_DEFINE(chan_button_evt, struct msg_button_evt, NULL, NULL, ZBUS_OBSERV
 		 ZBUS_MSG_INIT(.evt = BUTTON_EVT_UNDEFINED));
 
 #define SLEEP_TIME_MS 1
+#define LONG_PRESS_THRESHOLD_MS 3000
 
 /*
  * Get button configuration from the devicetree sw0 alias. This is mandatory.
@@ -22,6 +23,9 @@ ZBUS_CHAN_DEFINE(chan_button_evt, struct msg_button_evt, NULL, NULL, ZBUS_OBSERV
 static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET(SW0_NODE, gpios);
 static struct gpio_callback button_cb_data;
 
+static int64_t press_time = 0;
+int64_t duration_ms;
+
 void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
 	struct msg_button_evt msg = {.evt = BUTTON_EVT_UNDEFINED};
@@ -29,12 +33,22 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t
 	if (gpio_pin_get_dt(&button)) {
 		msg.evt = BUTTON_EVT_PRESSED;
 		printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
+
+		press_time = k_uptime_get();
 	} else {
 		msg.evt = BUTTON_EVT_RELEASED;
 		printk("Button released at %" PRIu32 "\n", k_cycle_get_32());
+
+		int64_t release_time= k_uptime_get();
+		duration_ms = release_time - press_time;
 	}
 
 	zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+
+	if(duration_ms > LONG_PRESS_THRESHOLD_MS){
+		msg.evt = BUTTON_EVT_LONGPRESS;
+		zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+	}
 }
 
 int button_init(void)
