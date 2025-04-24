@@ -11,33 +11,33 @@
 \begin{DoxyCompactItemize}
 \item 
 \#define \mbox{\hyperlink{button_8c_a840217aee9bd887463dad1b56defb051}{SLEEP\+\_\+\+TIME\+\_\+\+MS}}~1
-\begin{DoxyCompactList}\small\item\em Tempo de espera (em milissegundos) usado para sleep, se necessário. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Sleep time (in milliseconds) used when necessary. \end{DoxyCompactList}\item 
 \#define \mbox{\hyperlink{button_8c_aea6f782003374f75cd7ff90a9984658a}{SW0\+\_\+\+NODE}}~DT\+\_\+\+ALIAS(sw0)
-\begin{DoxyCompactList}\small\item\em Node do botão definido pelo alias {\ttfamily sw0} no Devicetree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Button node defined by the {\ttfamily sw0} alias in the Devicetree. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{button_8c_ac9b522e4a4544cf42e8a3b37c1376f11}{ZBUS\+\_\+\+CHAN\+\_\+\+DEFINE}} (chan\+\_\+button\+\_\+evt, struct \mbox{\hyperlink{structmsg__button__evt}{msg\+\_\+button\+\_\+evt}}, NULL, NULL, ZBUS\+\_\+\+OBSERVERS\+\_\+\+EMPTY, ZBUS\+\_\+\+MSG\+\_\+\+INIT(.evt=\mbox{\hyperlink{button_8h_a87b4d74f8f15adabcc6ea07f1ee8aa6aad6bf33767d934ccc472ece469cb40e3d}{BUTTON\+\_\+\+EVT\+\_\+\+UNDEFINED}}))
-\begin{DoxyCompactList}\small\item\em Canal ZBus para eventos do botão. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em ZBus channel for button events. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{button_8c_aced4b63040998ec6ba93edf16853e366}{timer\+\_\+button\+\_\+cb}} (struct k\+\_\+timer \texorpdfstring{$\ast$}{*}timer\+\_\+id)
-\begin{DoxyCompactList}\small\item\em Callback do timer responsável por detectar long press. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Timer callback for detecting long press. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{button_8c_a36615353063eec4e3a0490a6e93205db}{K\+\_\+\+TIMER\+\_\+\+DEFINE}} (timer\+\_\+button, \mbox{\hyperlink{button_8c_aced4b63040998ec6ba93edf16853e366}{timer\+\_\+button\+\_\+cb}}, NULL)
-\begin{DoxyCompactList}\small\item\em Define o timer que será usado para detectar long press. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Defines the timer used to detect long press. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{button_8c_ab4b2c1747e66383dfb0b5679887e1854}{button\+\_\+pressed}} (const struct device \texorpdfstring{$\ast$}{*}dev, struct gpio\+\_\+callback \texorpdfstring{$\ast$}{*}cb, uint32\+\_\+t pins)
-\begin{DoxyCompactList}\small\item\em Callback de interrupção do botão. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Button interrupt callback. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{button_8c_a596c0e0ecccb0aaa1f16a066e2d74479}{button\+\_\+init}} (void)
-\begin{DoxyCompactList}\small\item\em Inicializa o botão a partir da especificação do Devicetree. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Initializes the button from the Devicetree specification. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{button_8c_aca05b0a9cdeb7f84556f1c3b37e68d88}{button\+\_\+enable\+\_\+interrupts}} (void)
-\begin{DoxyCompactList}\small\item\em Ativa as interrupções para o botão. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Enables interrupts for the button. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 static const struct gpio\+\_\+dt\+\_\+spec \mbox{\hyperlink{button_8c_aff7d1f2eb6cf27f396bf2400f02c238b}{button}} = GPIO\+\_\+\+DT\+\_\+\+SPEC\+\_\+\+GET(\mbox{\hyperlink{button_8c_aea6f782003374f75cd7ff90a9984658a}{SW0\+\_\+\+NODE}}, gpios)
-\begin{DoxyCompactList}\small\item\em Especificação do botão obtida via Devicetree. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Button specification obtained via Devicetree. \end{DoxyCompactList}\item 
 static struct gpio\+\_\+callback \mbox{\hyperlink{button_8c_af87c152961b80d006d89268229eccd00}{button\+\_\+cb\+\_\+data}}
-\begin{DoxyCompactList}\small\item\em Estrutura de callback associada ao botão. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Callback structure associated with the button. \end{DoxyCompactList}\item 
 static bool \mbox{\hyperlink{button_8c_a40ddb0144823575f56937099a18a1510}{longpress\+\_\+detected}} = false
-\begin{DoxyCompactList}\small\item\em Flag global que indica se ocorreu long press. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Global flag indicating whether a long press was detected. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Macro Definition Documentation}
@@ -49,7 +49,7 @@ static bool \mbox{\hyperlink{button_8c_a40ddb0144823575f56937099a18a1510}{longpr
 
 
 
-Tempo de espera (em milissegundos) usado para sleep, se necessário. 
+Sleep time (in milliseconds) used when necessary. 
 
 \Hypertarget{button_8c_aea6f782003374f75cd7ff90a9984658a}\index{button.c@{button.c}!SW0\_NODE@{SW0\_NODE}}
 \index{SW0\_NODE@{SW0\_NODE}!button.c@{button.c}}
@@ -59,7 +59,7 @@ Tempo de espera (em milissegundos) usado para sleep, se necessário.
 
 
 
-Node do botão definido pelo alias {\ttfamily sw0} no Devicetree. 
+Button node defined by the {\ttfamily sw0} alias in the Devicetree. 
 
 
 
@@ -72,17 +72,17 @@ int button\+\_\+enable\+\_\+interrupts (\begin{DoxyParamCaption}\item[{void}]{}{
 
 
 
-Ativa as interrupções para o botão. 
+Enables interrupts for the button. 
 
-Ativa as interrupções do botão.
+Enables button interrupts.
 
-Configura interrupções nas bordas de subida e descida do sinal do botão. Adiciona o callback de interrupção para detecção de pressionamento/liberação.
+Configures interrupts on both rising and falling edges of the button signal. Adds the interrupt callback to detect button press/release.
 
 
 \begin{DoxyRetVals}{Return values}
-{\em 0} & Sucesso. \\
+{\em 0} & Success. \\
 \hline
-{\em $<$0} & Código de erro em caso de falha na configuração. \\
+{\em $<$0} & Error code in case of failure to configure. \\
 \hline
 \end{DoxyRetVals}
 \Hypertarget{button_8c_a596c0e0ecccb0aaa1f16a066e2d74479}\index{button.c@{button.c}!button\_init@{button\_init}}
@@ -93,19 +93,19 @@ int button\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCap
 
 
 
-Inicializa o botão a partir da especificação do Devicetree. 
+Initializes the button from the Devicetree specification. 
 
-Inicializa o botão.
+Initializes the button.
 
-Configura o pino do botão como entrada GPIO.
+Configures the button pin as a GPIO input.
 
 
 \begin{DoxyRetVals}{Return values}
-{\em 0} & Sucesso. \\
+{\em 0} & Success. \\
 \hline
-{\em -\/\+ENODEV} & Se o dispositivo do botão não estiver pronto. \\
+{\em -\/\+ENODEV} & If the button device is not ready. \\
 \hline
-{\em $<$0} & Código de erro da configuração do pino GPIO. \\
+{\em $<$0} & GPIO pin configuration error code. \\
 \hline
 \end{DoxyRetVals}
 \Hypertarget{button_8c_ab4b2c1747e66383dfb0b5679887e1854}\index{button.c@{button.c}!button\_pressed@{button\_pressed}}
@@ -116,17 +116,17 @@ void button\+\_\+pressed (\begin{DoxyParamCaption}\item[{const struct device \te
 
 
 
-Callback de interrupção do botão. 
+Button interrupt callback. 
 
-Essa função é chamada automaticamente quando o botão de estado\+: pressionado ou liberado. Quando pressionado, inicia um timer de 3 segundos. Se liberrado cancela o timer e envia os eventos. correspondentes via ZBus. Se o botão ficou pressionado por mais de 3 segundos, também envia o evento BUTTON\+\_\+\+EVT\+\_\+\+LONGPRESS após o evento BUTTON\+\_\+\+EVT\+\_\+\+RELEASED.
+This function is automatically called when the button state changes\+: pressed or released. When pressed, it starts a 3-\/second timer. If released, it cancels the timer and sends the corresponding events via ZBus. If the button was held for more than 3 seconds, it also sends the BUTTON\+\_\+\+EVT\+\_\+\+LONGPRESS event after the BUTTON\+\_\+\+EVT\+\_\+\+RELEASED event.
 
 
 \begin{DoxyParams}{Parameters}
-{\em dev} & Ponteiro para o dispositivo do GPIO. \\
+{\em dev} & Pointer to the GPIO device. \\
 \hline
-{\em cb} & Ponteiro para a estrutura de callback do GPIO. \\
+{\em cb} & Pointer to the GPIO callback structure. \\
 \hline
-{\em pins} & Máscara de pinos que geraram a interrupção. \\
+{\em pins} & Pin mask that triggered the interrupt. \\
 \hline
 \end{DoxyParams}
 \Hypertarget{button_8c_a36615353063eec4e3a0490a6e93205db}\index{button.c@{button.c}!K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}}
@@ -137,7 +137,7 @@ K\+\_\+\+TIMER\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{timer\+\_\+button}]
 
 
 
-Define o timer que será usado para detectar long press. 
+Defines the timer used to detect long press. 
 
 \Hypertarget{button_8c_aced4b63040998ec6ba93edf16853e366}\index{button.c@{button.c}!timer\_button\_cb@{timer\_button\_cb}}
 \index{timer\_button\_cb@{timer\_button\_cb}!button.c@{button.c}}
@@ -147,13 +147,13 @@ void timer\+\_\+button\+\_\+cb (\begin{DoxyParamCaption}\item[{struct k\+\_\+tim
 
 
 
-Callback do timer responsável por detectar long press. 
+Timer callback for detecting long press. 
 
-Essa função é chamada automaticamente após 3 segundos se o botão continuar pressionado. Ela apenas marca a flag {\ttfamily longpress\+\_\+detected} como true.
+This function is automatically called after 3 seconds if the button remains pressed. It simply sets the {\ttfamily longpress\+\_\+detected} flag to true.
 
 
 \begin{DoxyParams}{Parameters}
-{\em timer\+\_\+id} & Ponteiro para o timer que disparou (não utilizado). \\
+{\em timer\+\_\+id} & Pointer to the timer that triggered (unused). \\
 \hline
 \end{DoxyParams}
 \Hypertarget{button_8c_ac9b522e4a4544cf42e8a3b37c1376f11}\index{button.c@{button.c}!ZBUS\_CHAN\_DEFINE@{ZBUS\_CHAN\_DEFINE}}
@@ -164,9 +164,9 @@ ZBUS\+\_\+\+CHAN\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{chan\+\_\+button\
 
 
 
-Canal ZBus para eventos do botão. 
+ZBus channel for button events. 
 
-Este canal é utilizado para publicar eventos do tipo {\ttfamily \doxylink{structmsg__button__evt}{msg\+\_\+button\+\_\+evt}} relacionados ao estado do botão físico, como pressionado, liberado ou long press. 
+This channel is used to publish {\ttfamily \doxylink{structmsg__button__evt}{msg\+\_\+button\+\_\+evt}} type events related to the physical button\textquotesingle{}s state, such as pressed, released, or long press. 
 
 \doxysubsection{Variable Documentation}
 \Hypertarget{button_8c_aff7d1f2eb6cf27f396bf2400f02c238b}\index{button.c@{button.c}!button@{button}}
@@ -177,7 +177,7 @@ const struct gpio\+\_\+dt\+\_\+spec button = GPIO\+\_\+\+DT\+\_\+\+SPEC\+\_\+\+G
 
 
 
-Especificação do botão obtida via Devicetree. 
+Button specification obtained via Devicetree. 
 
 \Hypertarget{button_8c_af87c152961b80d006d89268229eccd00}\index{button.c@{button.c}!button\_cb\_data@{button\_cb\_data}}
 \index{button\_cb\_data@{button\_cb\_data}!button.c@{button.c}}
@@ -187,7 +187,7 @@ struct gpio\+\_\+callback button\+\_\+cb\+\_\+data\hspace{0.3cm}{\ttfamily [stat
 
 
 
-Estrutura de callback associada ao botão. 
+Callback structure associated with the button. 
 
 \Hypertarget{button_8c_a40ddb0144823575f56937099a18a1510}\index{button.c@{button.c}!longpress\_detected@{longpress\_detected}}
 \index{longpress\_detected@{longpress\_detected}!button.c@{button.c}}
@@ -197,6 +197,6 @@ bool longpress\+\_\+detected = false\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
-Flag global que indica se ocorreu long press. 
+Global flag indicating whether a long press was detected. 
 
-Essa flag é ativada pelo timer após 3 segundos de botão pressionado. É checada no momento de liberação do botão para emitir o evento BUTTON\+\_\+\+EVT\+\_\+\+LONGPRESS 
+This flag is set by the timer after 3 seconds of button press. It is checked when the button is released to emit the BUTTON\+\_\+\+EVT\+\_\+\+LONGPRESS event. 
