@@ -16,6 +16,7 @@ struct msg_button_evt {
 ZBUS_CHAN_DECLARE(chan_button_evt);
 
 int button_init(void);
+
 int button_enable_interrupts(void);
 
 #endif /* _BUTTON_H_ */

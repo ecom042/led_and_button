@@ -12,15 +12,24 @@ ZBUS_CHAN_DEFINE(chan_button_evt, struct msg_button_evt, NULL, NULL, ZBUS_OBSERV
 
 #define SLEEP_TIME_MS 1
 
-/*
- * Get button configuration from the devicetree sw0 alias. This is mandatory.
- */
 #define SW0_NODE DT_ALIAS(sw0)
+
 #if !DT_NODE_HAS_STATUS_OKAY(SW0_NODE)
 #error "Unsupported board: sw0 devicetree alias is not defined"
 #endif
+
 static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET(SW0_NODE, gpios);
+
 static struct gpio_callback button_cb_data;
+
+static bool longpress_detected = false;
+
+void timer_button_cb(struct k_timer *timer_id)
+{
+	longpress_detected = true;
+}
+
+K_TIMER_DEFINE(timer_button, timer_button_cb, NULL);
 
 void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
@@ -28,13 +37,23 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t
 
 	if (gpio_pin_get_dt(&button)) {
 		msg.evt = BUTTON_EVT_PRESSED;
+		longpress_detected = false;
+		k_timer_start(&timer_button, K_SECONDS(3), K_NO_WAIT);
 		printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
 	} else {
 		msg.evt = BUTTON_EVT_RELEASED;
+		k_timer_stop(&timer_button);
 		printk("Button released at %" PRIu32 "\n", k_cycle_get_32());
 	}
 
 	zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+
+	if (longpress_detected) {
+		msg.evt = BUTTON_EVT_LONGPRESS;
+		zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+		printk("Button long press at %" PRIu32 "\n", k_cycle_get_32());
+		longpress_detected = false;
+	}
 }
 
 int button_init(void)
