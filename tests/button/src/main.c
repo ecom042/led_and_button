@@ -31,6 +31,17 @@ static struct button_fixture {
 		k_msleep(80);                                                                      \
 	} while (0)
 
+/**
+ * Setup function for button test.
+ *
+ * This function initializes the button test environment by performing the following steps:
+ * - Ensures that the button GPIO port is not null.
+ * - Initializes the button using the `button_init` function.
+ * - Sets the initial input state of the button GPIO pin to high (1) using the GPIO emulator.
+ * - Enables button interrupts to allow handling of button events.
+ *
+ * @return Pointer to the test fixture structure.
+ */
 static void *button_test_setup(void)
 {
 	zassert_not_null(fixture.button_gpio.port);
@@ -44,6 +55,13 @@ static void *button_test_setup(void)
 	return &fixture;
 }
 
+/**
+ * Test case for single button press and release event handling.
+ *
+ * This test verifies the behavior of the button event system when a button
+ * is pressed and then released. It ensures that the correct events are
+ * published to the zbus channel and that the event values are as expected.
+ */
 ZTEST_F(button, test_01_single_press)
 {
 	const struct zbus_channel *chan;
@@ -64,6 +82,12 @@ ZTEST_F(button, test_01_single_press)
 	zassert_true(msg.evt == BUTTON_EVT_RELEASED);
 }
 
+/**
+ * Test case for verifying the long press behavior of a button.
+ *
+ * This test simulates a button press and release sequence to validate
+ * the detection of a long press event.
+ **/
 ZTEST_F(button, test_02_long_press)
 {
 	const struct zbus_channel *chan;
