@@ -23,6 +23,17 @@ static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET(SW0_NODE, gpios);
 static struct gpio_callback button_cb_data;
 
 static int64_t press_start_time = 0;
+/**
+ * @brief GPIO callback for button state changes.
+ *
+ * This function is called on GPIO interrupts triggered by the button's state
+ * transitions (press or release). It identifies the event type and publishes
+ * a corresponding message to the zbus channel.
+ *
+ * @param dev Pointer to the device structure associated with the GPIO controller.
+ * @param cb Pointer to the GPIO callback structure.
+ * @param pins Bitmask identifying the GPIO pin(s) that triggered the interrupt.
+ */
 
 void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
@@ -49,6 +60,15 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t
 	}
 }
 
+/**
+ * @brief Initialize the button GPIO configuration.
+ *
+ * Configures the GPIO pin associated with the button as an input.
+ * Verifies that the GPIO device is ready before applying configuration.
+ *
+ * @return 0 on success, or a negative error code on failure.
+ */
+
 int button_init(void)
 {
 	int ret;
@@ -67,6 +87,16 @@ int button_init(void)
 
 	return 0;
 }
+
+/**
+ * @brief Enable GPIO interrupts for the button.
+ *
+ * Configures the button's GPIO pin to generate interrupts on both
+ * rising and falling edges. Also registers the callback function
+ * for handling button events.
+ *
+ * @return 0 on success, or a negative error code on failure.
+ */
 
 int button_enable_interrupts(void)
 {
