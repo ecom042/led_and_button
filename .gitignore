@@ -8,10 +8,6 @@
 *.swo
 *~
 
-# Documentation
-Doxyfile
-docs/
-
 # Emacs
 \#*\#
 
