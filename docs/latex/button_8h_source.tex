@@ -1,0 +1,28 @@
+\doxysection{button.\+h}
+\hypertarget{button_8h_source}{}\label{button_8h_source}\index{include/button.h@{include/button.h}}
+\mbox{\hyperlink{button_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_BUTTON\_H\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_BUTTON\_H\_}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <zephyr/zbus/zbus.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{enum}\ \mbox{\hyperlink{button_8h_a87b4d74f8f15adabcc6ea07f1ee8aa6a}{button\_evt\_type}}\ \{}
+\DoxyCodeLine{00007\ \ \ \ \ \mbox{\hyperlink{button_8h_a87b4d74f8f15adabcc6ea07f1ee8aa6aad6bf33767d934ccc472ece469cb40e3d}{BUTTON\_EVT\_UNDEFINED}},}
+\DoxyCodeLine{00008\ \ \ \ \ \mbox{\hyperlink{button_8h_a87b4d74f8f15adabcc6ea07f1ee8aa6aaa772ed90683014f4ae1f3cf311033f25}{BUTTON\_EVT\_PRESSED}},}
+\DoxyCodeLine{00009\ \ \ \ \ \mbox{\hyperlink{button_8h_a87b4d74f8f15adabcc6ea07f1ee8aa6aa77915e901e3d7d751ee49f470dce7516}{BUTTON\_EVT\_RELEASED}},}
+\DoxyCodeLine{00010\ \ \ \ \ \mbox{\hyperlink{button_8h_a87b4d74f8f15adabcc6ea07f1ee8aa6aabe8331adc96fb854a54ee68e449ad8dd}{BUTTON\_EVT\_LONGPRESS}},}
+\DoxyCodeLine{00011\ \};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmsg__button__evt}{msg\_button\_evt}}\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{button_8h_a87b4d74f8f15adabcc6ea07f1ee8aa6a}{button\_evt\_type}}\ \mbox{\hyperlink{structmsg__button__evt_aa9a0940694a47962b956d082b2959704}{evt}};}
+\DoxyCodeLine{00016\ \};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00019\ \mbox{\hyperlink{button_8h_a8e9f0fb5ecfda2b6ade4e860415fd3ef}{ZBUS\_CHAN\_DECLARE}}(chan\_button\_evt);}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00030\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{button_8h_a596c0e0ecccb0aaa1f16a066e2d74479}{button\_init}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00040\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{button_8h_aca05b0a9cdeb7f84556f1c3b37e68d88}{button\_enable\_interrupts}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ \_BUTTON\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}
