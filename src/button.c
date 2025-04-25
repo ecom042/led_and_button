@@ -7,6 +7,10 @@
 #include <zephyr/sys/printk.h>
 #include <inttypes.h>
 
+/*
+ * This channel is used to communicate button events, such as press, release,
+ * and long press, to other parts of the application.
+ */
 ZBUS_CHAN_DEFINE(chan_button_evt, struct msg_button_evt, NULL, NULL, ZBUS_OBSERVERS_EMPTY,
 		 ZBUS_MSG_INIT(.evt = BUTTON_EVT_UNDEFINED));
 
@@ -21,9 +25,13 @@ ZBUS_CHAN_DEFINE(chan_button_evt, struct msg_button_evt, NULL, NULL, ZBUS_OBSERV
 #endif
 static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET(SW0_NODE, gpios);
 static struct gpio_callback button_cb_data;
-
 static uint32_t button_press_time = 0;
 
+/*
+ * This function is called whenever the button state changes.
+ * It determines the type of event (press, release, or long press), logs the event,
+ * and publishes it to the ZBUS channel.
+ */
 void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins) {
     struct msg_button_evt msg = {.evt = BUTTON_EVT_UNDEFINED};
 
@@ -54,6 +62,10 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t
     }
 }
 
+/*
+ * This function configures the button GPIO pin as an input. It also checks
+ * if the button device is ready before proceeding.
+ */
 int button_init(void)
 {
 	int ret;
@@ -73,6 +85,10 @@ int button_init(void)
 	return 0;
 }
 
+/*
+ * this function configures interrupts on the button GPIO pin for both rising
+ * and falling edges. It also initializes and registers the GPIO callback.
+ */
 int button_enable_interrupts(void)
 {
 	int ret = gpio_pin_interrupt_configure_dt(&button, GPIO_INT_EDGE_BOTH);
