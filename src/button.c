@@ -22,19 +22,36 @@ ZBUS_CHAN_DEFINE(chan_button_evt, struct msg_button_evt, NULL, NULL, ZBUS_OBSERV
 static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET(SW0_NODE, gpios);
 static struct gpio_callback button_cb_data;
 
-void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
-{
-	struct msg_button_evt msg = {.evt = BUTTON_EVT_UNDEFINED};
+static uint32_t button_press_time = 0;
 
-	if (gpio_pin_get_dt(&button)) {
-		msg.evt = BUTTON_EVT_PRESSED;
-		printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
-	} else {
-		msg.evt = BUTTON_EVT_RELEASED;
-		printk("Button released at %" PRIu32 "\n", k_cycle_get_32());
-	}
+void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins) {
+    struct msg_button_evt msg = {.evt = BUTTON_EVT_UNDEFINED};
 
-	zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+    if (gpio_pin_get_dt(&button)) {
+        msg.evt = BUTTON_EVT_PRESSED;
+
+        button_press_time = k_uptime_get_32();
+
+        printk("Button pressed at %" PRIu32 " ms\n", button_press_time);
+
+        zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+    } else {
+        uint32_t button_release_time = k_uptime_get_32();
+        uint32_t duration = button_release_time - button_press_time;
+
+        msg.evt = BUTTON_EVT_RELEASED;
+        printk("Button released at %" PRIu32 " ms\n", button_release_time);
+
+
+        zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+
+        if (duration > 3000) {
+            msg.evt = BUTTON_EVT_LONGPRESS;
+            printk("Button long-pressed for %" PRIu32 " ms\n", duration);
+
+            zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+        }
+    }
 }
 
 int button_init(void)
