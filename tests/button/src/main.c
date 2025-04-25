@@ -31,6 +31,16 @@ static struct button_fixture {
 		k_msleep(80);                                                                      \
 	} while (0)
 
+/**
+  * @brief Test setup function for the button test suite.
+  *
+  * This function initializes the button device and 
+  * also enables interrupts and validates the
+  * button GPIO port.
+  *
+  * @return Pointer to the fixture structure used by the tests.
+  */
+
 static void *button_test_setup(void)
 {
 	zassert_not_null(fixture.button_gpio.port);
@@ -43,6 +53,16 @@ static void *button_test_setup(void)
 
 	return &fixture;
 }
+
+/**
+ * @brief Test case for a single button press and release event.
+ *
+ * This test simulates a button press followed by a release, and verifies that
+ * the corresponding events, BUTTON_EVT_PRESSED and BUTTON_EVT_RELEASED, are 
+ * correctly published to the zbus channel. The test ensures that the events 
+ * are sent in the proper order, confirming that the button press and release 
+ * actions are correctly handled by the system.
+ */
 
 ZTEST_F(button, test_01_single_press)
 {
@@ -63,6 +83,14 @@ ZTEST_F(button, test_01_single_press)
 
 	zassert_true(msg.evt == BUTTON_EVT_RELEASED);
 }
+
+/**
+ * @brief Test case for a long button press event.
+ *
+ * This test simulates a long button press and release, verifying that the 
+ * BUTTON_EVT_PRESSED, BUTTON_EVT_RELEASED, and BUTTON_EVT_LONGPRESS events 
+ * are correctly sent to the zbus channel.
+ */
 
 ZTEST_F(button, test_02_long_press)
 {
