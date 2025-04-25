@@ -21,15 +21,22 @@ ZBUS_CHAN_DEFINE(chan_button_evt, struct msg_button_evt, NULL, NULL, ZBUS_OBSERV
 #endif
 static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET(SW0_NODE, gpios);
 static struct gpio_callback button_cb_data;
-
+int64_t button_press_timestamp = 0;
+int64_t button_release_timestamp = 0;
 void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
 	struct msg_button_evt msg = {.evt = BUTTON_EVT_UNDEFINED};
 
 	if (gpio_pin_get_dt(&button)) {
 		msg.evt = BUTTON_EVT_PRESSED;
+		button_press_timestamp = k_uptime_get_32();
 		printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
 	} else {
+		button_release_timestamp = k_uptime_get_32();
+		if ((button_release_timestamp - button_press_timestamp) >=3000){
+			msg.evt = BUTTON_EVT_LONGPRESS;
+			zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+		}
 		msg.evt = BUTTON_EVT_RELEASED;
 		printk("Button released at %" PRIu32 "\n", k_cycle_get_32());
 	}
