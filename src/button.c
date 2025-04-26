@@ -7,6 +7,11 @@
 #include <zephyr/sys/printk.h>
 #include <inttypes.h>
 
+#define EVENT_PRESSED_TIME 3000
+
+int64_t press_time = 0;
+int64_t release_time = 0;
+
 ZBUS_CHAN_DEFINE(chan_button_evt, struct msg_button_evt, NULL, NULL, ZBUS_OBSERVERS_EMPTY,
 		 ZBUS_MSG_INIT(.evt = BUTTON_EVT_UNDEFINED));
 
@@ -27,14 +32,25 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t
 	struct msg_button_evt msg = {.evt = BUTTON_EVT_UNDEFINED};
 
 	if (gpio_pin_get_dt(&button)) {
+		press_time = k_uptime_get();
+
 		msg.evt = BUTTON_EVT_PRESSED;
 		printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
+		zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
 	} else {
+		release_time = k_uptime_get();
+		int64_t duration = release_time - press_time;
+
 		msg.evt = BUTTON_EVT_RELEASED;
 		printk("Button released at %" PRIu32 "\n", k_cycle_get_32());
-	}
+		zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
 
-	zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+		if (duration >= EVENT_PRESSED_TIME) {
+			struct msg_button_evt long_press_msg = {.evt = BUTTON_EVT_LONGPRESS};
+			printk("Long press detected: %" PRId64 "ms\n", duration);
+			zbus_chan_pub(&chan_button_evt, &long_press_msg, K_NO_WAIT);
+		}
+	}
 }
 
 int button_init(void)
