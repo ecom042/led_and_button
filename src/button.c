@@ -29,9 +29,17 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t
 	if (gpio_pin_get_dt(&button)) {
 		msg.evt = BUTTON_EVT_PRESSED;
 		printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
+		int32_t press_time = k_uptime_get();
 	} else {
 		msg.evt = BUTTON_EVT_RELEASED;
 		printk("Button released at %" PRIu32 "\n", k_cycle_get_32());
+		int32_t released_time = k_uptime_get();
+	}
+
+	zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
+
+	if(released_time - press_time >= 3000) {
+		msg.evt = BUTTON_EVENT_LONG_PRESS;
 	}
 
 	zbus_chan_pub(&chan_button_evt, &msg, K_NO_WAIT);
